@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+# Rimozione delle configurazioni per un nuovo setup pulito
+
+FOLDERS_TO_REMOVE=(
+    "$HOME/.config/nvim"
+    "$HOME/.config/git"
+    "$HOME/.config/ghostty"
+)
+
+FILES_TO_REMOVE=(
+    "$HOME/.zshrc"
+    "$HOME/.zprofile"
+)
+
+echo "ATTENZIONE: verranno eliminati definitivamente i seguenti elementi:"
+echo
+
+for folder in "${FOLDERS_TO_REMOVE[@]}"; do
+    echo " - $folder"
+done
+
+for file in "${FILES_TO_REMOVE[@]}"; do
+    echo " - $file"
+done
+
+echo
+read -r -p "Sei sicuro di voler procedere? (s/N): " confirm
+
+if [[ "$confirm" =~ ^[sS]$ ]]; then
+    echo
+
+    for folder in "${FOLDERS_TO_REMOVE[@]}"; do
+        if [[ -d "$folder" ]]; then
+            rm -rf -- "$folder"
+            echo "✔ Cartella rimossa: $folder"
+        else
+            echo "⚠ Cartella ignorata, non trovata: $folder"
+        fi
+    done
+
+    for file in "${FILES_TO_REMOVE[@]}"; do
+        if [[ -f "$file" ]]; then
+            rm -f -- "$file"
+            echo "✔ File rimosso: $file"
+        else
+            echo "⚠ File ignorato, non trovato: $file"
+        fi
+    done
+
+    echo
+    echo "Pulizia completata con successo."
+else
+    echo "Operazione annullata. Non è stato cancellato nulla."
+fi

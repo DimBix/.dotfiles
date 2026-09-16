@@ -1,0 +1,81 @@
+
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+INSTALL_CMD=(sudo dnf install -y)
+
+PACKAGES_WORKSTATION=(
+    git
+    neovim
+    openssh-clients
+    zsh
+    ghostty
+    wget
+    stow
+    cargo
+    unzip
+    zip
+    ripgrep
+    python3
+    python3-pip
+    gcc
+    gcc-c++
+    make
+)
+
+PACKAGES_GAMING=(
+    steam
+)
+
+ALL_PACKAGES=(
+    "${PACKAGES_WORKSTATION[@]}"
+    "${PACKAGES_GAMING[@]}"
+)
+
+echo "Selezionare il tipo di installazione:"
+echo "Totale: t"
+echo "Gaming: g"
+echo "Workstation: w"
+
+read -r -p "--> " choice
+
+case "$choice" in
+    t|T)
+        PACKAGES=("${ALL_PACKAGES[@]}")
+        ;;
+    g|G)
+        PACKAGES=("${PACKAGES_GAMING[@]}")
+        ;;
+    w|W)
+        PACKAGES=("${PACKAGES_WORKSTATION[@]}")
+        ;;
+    *)
+        echo "Opzione inesistente."
+        exit 1
+        ;;
+esac
+
+echo
+echo "I seguenti pacchetti verranno installati:"
+printf ' - %s\n' "${PACKAGES[@]}"
+echo
+
+read -r -p "Procedere con l'installazione? (s/N): " confirm
+
+if [[ ! "$confirm" =~ ^[sS]$ ]]; then
+    echo "Operazione annullata."
+    exit 0
+fi
+
+echo
+echo "Aggiornamento dei pacchetti..."
+sudo dnf upgrade --refresh -y
+
+echo
+echo "Installazione dei pacchetti..."
+"${INSTALL_CMD[@]}" "${PACKAGES[@]}"
+
+echo
+echo "Installazione completata."
+
