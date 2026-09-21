@@ -2,6 +2,8 @@
 
 set -Eeuo pipefail
 
+: "${HOME:?La variabile HOME non è impostata}"
+
 # Rimozione delle configurazioni per un nuovo setup pulito
 
 FOLDERS_TO_REMOVE=(
