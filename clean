@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -Eeuo pipefail
+
 # Rimozione delle configurazioni per un nuovo setup pulito
 
 FOLDERS_TO_REMOVE=(
