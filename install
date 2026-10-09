@@ -73,6 +73,7 @@ sudo dnf upgrade --refresh -y
 
 echo
 echo "Installazione dei pacchetti..."
+sudo dnf copr enable scottames/ghostty
 "${INSTALL_CMD[@]}" "${PACKAGES[@]}"
 
 echo
